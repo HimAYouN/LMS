@@ -41,6 +41,7 @@ function AdminDashboard() {
   };
 
   const fetchAdminProfile = async () => {
+    setLoading(true);
     try {
       const token = localStorage.getItem("adminToken");
       const response = await axios.get(
@@ -53,7 +54,7 @@ function AdminDashboard() {
       );
       console.log("Response: " + response.data.data.email);
       setAdmin(response.data.data);
-      setLoading(true);
+      setLoading(false);
       console.log(response.data);
       console.log(admin);
     } catch (error) {
@@ -77,13 +78,13 @@ function AdminDashboard() {
               <h2 className="text-lg font-semibold mb-4">Admin Info</h2>
               <div className="text-sm text-gray-700 space-y-1">
                 <p>
-                  <span className="font-medium">Name:</span> Admin Name
+                  <span className="font-medium">Name:</span> {admin?.name}
                 </p>
                 <p>
-                  <span className="font-medium">ID:</span> {admin.name}
+                  <span className="font-medium">ID:</span> {admin?.id}
                 </p>
                 <p>
-                  <span className="font-medium">Email:</span> {admin.email}
+                  <span className="font-medium">Email:</span> {admin?.email}
                 </p>
               </div>
             </div>
