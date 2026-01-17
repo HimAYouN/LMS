@@ -4,6 +4,8 @@ import { ApiResponse } from "../utils/apiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import mongoose from "mongoose";
 import { User } from "../models/user.model.js";
+import { MentorProfile } from "../models/mentorProfile.model.js";
+
 
 
 const requestMentorRole = asyncHandler(async (req, res) => {
@@ -108,8 +110,28 @@ const approveMentorRequest = asyncHandler(async (req, res) => {
       throw new ApiError(400, "User is not eligible for mentor role");
     }
 
+    const existingProfile = await MentorProfile.findOne({
+      userId: user._id,
+    }).session(session);
+
+    if (existingProfile) {
+      throw new ApiError(409, "Mentor profile already exists");
+    }
+
     user.role = "mentor";
     await user.save({ session });
+
+    // Create mentor profile
+    await MentorProfile.create(
+      [
+        {
+          userId: user._id,
+          expertise: ["General"], 
+          experience: 0,          // mentor can update later
+        },
+      ],
+      { session }
+    );
 
     request.status = "approved";
     request.reviewedBy = req.user._id;
@@ -125,9 +147,9 @@ const approveMentorRequest = asyncHandler(async (req, res) => {
         {
           requestId: request._id,
           userId: user._id,
-          newRole: user.role,
+          newRole: "mentor",
         },
-        "Mentor request approved successfully"
+        "Mentor request approved and profile created successfully"
       )
     );
   } catch (error) {
@@ -136,6 +158,7 @@ const approveMentorRequest = asyncHandler(async (req, res) => {
     throw error;
   }
 });
+
 
 const rejectMentorRequest = asyncHandler(async (req, res) => {
   const { requestId } = req.params;
