@@ -68,7 +68,7 @@ const registerUser = asyncHandler ( async(req, res) => {
 })
 
 const loginUser  = asyncHandler (async(req,res) => {
-    const {email, password} = req.body
+    const {email, password, loginAs } = req.body
 
     if(!email || !password) {
         throw new ApiError(400,"Email and password are required!");
@@ -86,6 +86,13 @@ const loginUser  = asyncHandler (async(req,res) => {
         throw new ApiError(401,"Invalid User Credentials")
     }
 
+    if (loginAs && user.role !== loginAs) {
+    throw new ApiError(
+      403,
+      `You are not allowed to login as ${loginAs}`
+    );
+    }
+    
     const {accessToken, refreshToken} = await generateAccessAndRefreshTokens(
         user._id
     );
