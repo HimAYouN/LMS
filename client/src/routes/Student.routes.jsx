@@ -29,7 +29,7 @@ const StudentUpdateDetails = React.lazy(
 const StudentRoutes = () => (
     <>
         {/* STUDENT ROUTES */}
-        <Route element={<GuestRoute />}>
+        <Route element={<GuestRoute allowedRoles={['student']}  />}>
             <Route path="/student/login" element={<StudentAuth />} />
             <Route path="/student/verify" element={<StudentVerify />} />
             <Route path="/student/register" element={<StudentRegister />} />

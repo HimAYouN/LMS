@@ -1,10 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
+import { useAuth } from "../../../context/AuthContext";
 
 function AdminDashboard() {
   const navigate = useNavigate();
 
+  const { user } = useAuth()
+  
   //ADMIN dashboard only accessable to admins
 
   //Check if logged in
@@ -22,46 +25,13 @@ function AdminDashboard() {
 
   //Leaderboard // Graphs or something
 
-  const [admin, setAdmin] = useState(null);
+
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    checkLoggin();
-  }, []);
-  useEffect(() => {
-    fetchAdminProfile();
-  }, []);
-
-  const checkLoggin = () => {
-    const token = localStorage.getItem("adminToken");
-    if (typeof token !== "string" || token.trim() === "") {
-      navigate("/");
-      return;
-    }
-  };
-
-  const fetchAdminProfile = async () => {
-    setLoading(true);
-    try {
-      const token = localStorage.getItem("adminToken");
-      const response = await axios.get(
-        `http://localhost:3000/api/v1/users/current-user`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      console.log("Response: " + response.data.data.email);
-      setAdmin(response.data.data);
-      setLoading(false);
-      console.log(response.data);
-      console.log(admin);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  if (loading) return <div>Loading...</div>;
+ 
+if(loading){
+    return <div>Loading...</div>
+  }
   return (
     <div>
       <div className="min-h-screen w-full bg-gray-200 px-4 sm:px-6 lg:px-10 py-6">
@@ -78,13 +48,13 @@ function AdminDashboard() {
               <h2 className="text-lg font-semibold mb-4">Admin Info</h2>
               <div className="text-sm text-gray-700 space-y-1">
                 <p>
-                  <span className="font-medium">Name:</span> {admin?.name}
+                  <span className="font-medium">Name:</span> {user?.name}
                 </p>
                 <p>
-                  <span className="font-medium">ID:</span> {admin?.id}
+                  <span className="font-medium">ID:</span> {user?.id}
                 </p>
                 <p>
-                  <span className="font-medium">Email:</span> {admin?.email}
+                  <span className="font-medium">Email:</span> {user?.email}
                 </p>
               </div>
             </div>

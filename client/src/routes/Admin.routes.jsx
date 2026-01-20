@@ -11,10 +11,10 @@ const AdminDashboard = React.lazy(
 
 const AdminRoutes = () => (
     <>
-        <Route element={<GuestRoute />}>
+        <Route element={<GuestRoute allowedRoles={['admin']} />}>
             <Route path="/admin/login" element={<AdminAuth />} />
         </Route>
-        <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
             <Route path="/admin/dashboard" element={<AdminDashboard />} />
             {/* <Route path="/admin/users" element={< />} /> */}
         </Route>

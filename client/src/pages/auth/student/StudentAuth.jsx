@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useAuth } from "../../../context/AuthContext";
 import Loading from "../../../components/Loading";
@@ -12,7 +12,7 @@ function StudentAuth() {
   const [loading, setLoading] = useState(false)
   // console.log(email +  password);
 
-  const { login,  }  = useAuth();
+  const { login, logout  }  = useAuth();
   const navigate = useNavigate();
   // console.log("Above handleLogin");
   const handleLogin = async (e)=>{
@@ -21,9 +21,14 @@ function StudentAuth() {
     try {
       // console.log("Inside try");
       const response = await axios.post("http://localhost:3000/api/v1/users/login", { email, password});
-      setLoading(true)
-      // console.log("Response: " ,  response.data.data.user);
-      
+      // setLoading(true)
+      console.log("Response: " ,  response.data.data.user.role);
+      if (response.data.data.user.role !== "student") {
+      alert("You are not authorized");
+      logout();
+      navigate('/', { replace: true });
+      return;
+    }
       login(response.data.data.user, response.data.data.accessToken)
 // 
       // console.log("After login");
