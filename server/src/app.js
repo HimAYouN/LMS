@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import mentorCourseRouter from "./routes/mentor.course.route.js";
 import mentorProfileRouter from "./routes/mentor.profile.route.js";
 import enrollmentRouter from "./routes/enrollment.route.js";
+import courseRouter from "./routes/course.route.js";
 
 
 
@@ -29,6 +30,7 @@ app.use(cookieParser())
 
 
 
+
 app.use("/api/v1/users",userRouter)
 app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/role-requests", roleRequestRouter);
@@ -36,6 +38,8 @@ app.use("/api/v1/mentor", mentorRouter);
 app.use("/api/v1/mentor", mentorCourseRouter);
 app.use("/api/v1/mentor", mentorProfileRouter);
 app.use("/api/v1", enrollmentRouter);
+app.use("/api/v1", courseRouter);
+
 
 
 
