@@ -10,6 +10,7 @@ import mentorCourseRouter from "./routes/mentor.course.route.js";
 import mentorProfileRouter from "./routes/mentor.profile.route.js";
 import enrollmentRouter from "./routes/enrollment.route.js";
 import courseRouter from "./routes/course.route.js";
+import mentorContentRouter from "./routes/mentor.content.route.js";
 
 
 
@@ -39,6 +40,8 @@ app.use("/api/v1/mentor", mentorCourseRouter);
 app.use("/api/v1/mentor", mentorProfileRouter);
 app.use("/api/v1", enrollmentRouter);
 app.use("/api/v1", courseRouter);
+app.use("/api/v1/mentor", mentorContentRouter);
+
 
 
 
