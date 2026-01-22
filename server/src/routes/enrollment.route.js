@@ -7,12 +7,7 @@ import { getCourseEnrollments } from "../controller/mentorEnrollment.controller.
 const router = Router();
 
 
-router.get(
-  "/courses/:courseId/enrollments",
-  verifyJWT,
-  authorizeRoles("mentor"),
-  getCourseEnrollments
-);
+
 
 router.route("/courses/:courseId/enroll").post(verifyJWT, authorizeRoles("student"), enrollInCourse)
 router.route("/my-enrollments").get(verifyJWT, authorizeRoles("student"), getMyEnrollments)

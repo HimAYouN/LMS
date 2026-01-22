@@ -115,4 +115,4 @@ const getCourseDetails = asyncHandler(async (req, res) => {
 });
 
 
-export {getPublishedCourses ,getCourseDetails}
+export {getPublishedCourses ,getCourseDetails }
