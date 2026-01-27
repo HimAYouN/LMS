@@ -120,7 +120,7 @@ const getMentorCourseDetails = asyncHandler(async (req, res) => {
     throw new ApiError(404, "Course not found");
   }
 
-  // 🔐 Ownership check
+  // Ownership check
   if (course.mentorId._id.toString() !== req.user._id.toString()) {
     throw new ApiError(403, "You are not allowed to view this course");
   }

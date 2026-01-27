@@ -36,12 +36,11 @@ const getCourseDetails = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Invalid course ID");
   }
 
-  // 1️⃣ Fetch course
+  // Fetch course
   const course = await Course.findById(courseId).populate(
     "mentorId",
     "name"
   );
-
   if (!course) {
     throw new ApiError(404, "Course not found");
   }
@@ -53,12 +52,12 @@ const getCourseDetails = asyncHandler(async (req, res) => {
     user.role === "mentor" &&
     course.mentorId._id.toString() === user._id.toString();
 
-  // 2️⃣ Course visibility check
+  //  Course visibility check
   if (course.status !== "published" && !isMentorOwner) {
     throw new ApiError(403, "Course is not available");
   }
 
-  // 3️⃣ Check enrollment (only for students)
+  //  Check enrollment (only for students)
   let isEnrolled = false;
 
   if (user && user.role === "student") {
@@ -71,12 +70,12 @@ const getCourseDetails = asyncHandler(async (req, res) => {
     isEnrolled = !!enrollment;
   }
 
-  // 4️⃣ Fetch sections
+  //  Fetch sections
   const sections = await Section.find({ courseId })
     .sort({ order: 1 })
     .lean();
 
-  // 5️⃣ Fetch lessons for each section with visibility rules
+  //  Fetch lessons for each section with visibility rules
   for (const section of sections) {
     let lessonQuery = { sectionId: section._id };
 
