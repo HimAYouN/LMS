@@ -71,9 +71,6 @@ function OneCourse() {
         }
     };
 
-    const editCourse = async (courseId) => {
-        setLoading(true);
-    };
 
     const deleteCourse = async (courseId) => {
         setLoading(true);
@@ -266,14 +263,14 @@ function OneCourse() {
 
                             <button
                                 className="w-full px-4 py-2 rounded-lg border hover:bg-gray-100"
-                                onClick={() => editCourse(courseId)}
+                                onClick={() => navigate(`/mentor/course/updatecourse/${courseId}`)}
                             >
                                 Edit Course
                             </button>
                             <div className="flex gap-2">
                                 <button
                                     className="w-full px-4 py-2 rounded-lg border hover:bg-gray-100"
-                                    onClick={() => addQuiz(courseId)}
+                                    onClick={() => navigate(`/mentor/course/${courseId}/addquiz`)}
                                 >
                                     Add Quiz
                                 </button>
