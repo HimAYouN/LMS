@@ -71,8 +71,12 @@ function OneCourse() {
         }
     };
 
-
     const deleteCourse = async (courseId) => {
+        const confirmed = window.confirm(
+            'Are you sure you want to delete this course?'
+        );
+
+        if (!confirmed) return;
         setLoading(true);
         console.log(courseId);
         try {
@@ -87,14 +91,6 @@ function OneCourse() {
             console.log(error);
         }
     };
-
-    
-
-
-
-
-
-
 
     if (loading) {
         return <p className="p-6">Loading course...</p>;
@@ -263,14 +259,22 @@ function OneCourse() {
 
                             <button
                                 className="w-full px-4 py-2 rounded-lg border hover:bg-gray-100"
-                                onClick={() => navigate(`/mentor/course/updatecourse/${courseId}`)}
+                                onClick={() =>
+                                    navigate(
+                                        `/mentor/course/updatecourse/${courseId}`
+                                    )
+                                }
                             >
                                 Edit Course
                             </button>
                             <div className="flex gap-2">
                                 <button
                                     className="w-full px-4 py-2 rounded-lg border hover:bg-gray-100"
-                                    onClick={() => navigate(`/mentor/course/${courseId}/addquiz`)}
+                                    onClick={() =>
+                                        navigate(
+                                            `/mentor/course/${courseId}/addquiz`
+                                        )
+                                    }
                                 >
                                     Add Quiz
                                 </button>
