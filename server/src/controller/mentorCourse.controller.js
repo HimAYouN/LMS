@@ -5,6 +5,8 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import mongoose from "mongoose";
 import { Section } from "../models/section.model.js";
 import { Lesson } from "../models/lesson.model.js";
+import { Enrollment } from "../models/enrollment.model.js"; 
+
 
 const createCourse = asyncHandler(async (req, res) => {
   const { title, description, category, level } = req.body;
@@ -154,5 +156,48 @@ const getMentorCourseDetails = asyncHandler(async (req, res) => {
 });
 
 
+const deleteCourse = asyncHandler(async (req, res) => {
+  const { courseId } = req.params;
 
-export {createCourse , getMyCourses, updateCourse, changeCourseStatus , getMentorCourseDetails}
+  if (!mongoose.Types.ObjectId.isValid(courseId)) {
+    throw new ApiError(400, "Invalid course ID");
+  }
+
+  const course = await Course.findById(courseId);
+  if (!course) {
+    throw new ApiError(404, "Course not found");
+  }
+
+  // Ownership check
+  if (course.mentorId.toString() !== req.user._id.toString()) {
+    throw new ApiError(403, "You are not allowed to delete this course");
+  }
+
+  //  Fetch sections
+  const sections = await Section.find({ courseId }).select("_id");
+  const sectionIds = sections.map((s) => s._id);
+
+  //  Cascade deletes
+  await Lesson.deleteMany({ sectionId: { $in: sectionIds } });
+  await Section.deleteMany({ courseId });
+
+  //  Cancel enrollments
+  await Enrollment.updateMany(
+    { courseId },
+    { $set: { status: "cancelled" } }
+  );
+
+  //  HARD DELETE COURSE
+  await course.deleteOne();
+
+  return res.status(200).json(
+    new ApiResponse(
+      200,
+      { courseId },
+      "Course deleted successfully"
+    )
+  );
+});
+
+
+export {createCourse , getMyCourses, updateCourse, changeCourseStatus , getMentorCourseDetails, deleteCourse}
