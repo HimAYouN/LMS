@@ -303,6 +303,12 @@ function OneCourse() {
                                 </button>
                             </div>
                             <button
+                                    className="w-full px-4 py-2 rounded-lg border hover:bg-green-300 bg-green-100"
+                                    onClick={() => navigate(`/mentor/course/${courseId}/enrollments`)}
+                                >
+                                    See Enrollments
+                                </button>
+                            <button
                                 className="w-full px-4 py-2 rounded-lg border bg-red-300 text-red-800 hover:bg-red-800 hover:text-gray-50"
                                 onClick={() => deleteCourse(courseId)}
                             >
