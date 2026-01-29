@@ -15,6 +15,7 @@ function OneCourse() {
     useEffect(() => {
         fetchCourse();
     }, [courseId, token]);
+
     const fetchCourse = async () => {
         try {
             const response = await axios.get(
@@ -280,7 +281,9 @@ function OneCourse() {
                                 </button>
                                 <button
                                     className="w-full px-4 py-2 rounded-lg border hover:bg-gray-100"
-                                    onClick={() => seeQuizzes(courseId)}
+                                    onClick={() => navigate(
+                                            `/mentor/course/${courseId}/seequizzes`
+                                        )}
                                 >
                                     See Quizzes
                                 </button>

@@ -28,6 +28,9 @@ const AddQuiz = React.lazy(
 const UpdateCourse = React.lazy(
     () => import('../pages/mentor/courses/UpdateCourse')
 );
+const SeeQuizzes = React.lazy(
+    () => import('../pages/mentor/courses/SeeQuizzes')
+);
 
 
 const MentorRoutes = () => (
@@ -38,12 +41,13 @@ const MentorRoutes = () => (
         </Route>
         <Route element={<ProtectedRoute allowedRoles={['mentor']} />}>
             <Route path="/mentor/dashboard" element={<MentorDashboard />} />
-            <Route path="/mentor/course/:courseId" element={<MentorOneCourse />} />
             <Route path="/mentor/createCourse" element={<MentorCreateCourses />} />
+            <Route path="/mentor/course/:courseId" element={<MentorOneCourse />} />
+            <Route path="/mentor/course/updatecourse/:courseId" element={<UpdateCourse />} />
             <Route path="/mentor/course/:courseId/addlesson/:sectionId" element={<AddLesson />} />
             <Route path="/mentor/course/addsection/:courseId" element={<AddSection />} />
             <Route path="/mentor/course/:courseId/addquiz" element={<AddQuiz />} />
-            <Route path="/mentor/course/updatecourse/:courseId" element={<UpdateCourse />} />
+            <Route path="/mentor/course/:courseId/seequizzes" element={<SeeQuizzes />} />
         </Route>
     </>
 );

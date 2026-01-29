@@ -1,123 +1,174 @@
-
 import axios from 'axios';
-import React, { useState } from 'react'
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function AddQuiz() {
-    const {courseId} = useParams()
-    const token = localStorage.getItem("token")
-    console.log("courseId:", courseId);
-    const [form, setForm] = useState({
-        question: "",
-        option1: "",
-        option2: "",
-        option3: "",
-        option4: "",
-        order: 0
+    const { courseId } = useParams();
+    const token = localStorage.getItem('token');
+    const navigate = useNavigate()
+
+    const emptyQuestion = () => ({
+        questionText: '',
+        options: ['', '', '', ''],
+        correctOptionIndex: 0,
     });
-    const submitHandler = async(e)=>{
-        e.preventDefault()
+
+    const [quiz, setQuiz] = useState({
+        title: '',
+        questions: [emptyQuestion()],
+    });
+
+    const handleTitleChange = (e) =>
+        setQuiz((prev) => ({ ...prev, title: e.target.value }));
+
+    const addQuestion = () =>
+        setQuiz((prev) => ({
+            ...prev,
+            questions: [...prev.questions, emptyQuestion()],
+        }));
+
+    const removeQuestion = (qIdx) => {
+        setQuiz((prev) => ({
+            ...prev,
+            questions: prev.questions.filter((_, i) => i !== qIdx),
+        }));
+    };
+
+    const updateQuestionText = (qIdx, value) => {
+        setQuiz((prev) => ({
+            ...prev,
+            questions: prev.questions.map((q, i) =>
+                i === qIdx ? { ...q, questionText: value } : q
+            ),
+        }));
+    };
+
+    const updateOption = (qIdx, optIdx, value) => {
+        setQuiz((prev) => ({
+            ...prev,
+            questions: prev.questions.map((q, i) =>
+                i === qIdx
+                    ? {
+                          ...q,
+                          options: q.options.map((o, oi) =>
+                              oi === optIdx ? value : o
+                          ),
+                      }
+                    : q
+            ),
+        }));
+    };
+
+    const setCorrectOption = (qIdx, optIdx) => {
+        setQuiz((prev) => ({
+            ...prev,
+            questions: prev.questions.map((q, i) =>
+                i === qIdx ? { ...q, correctOptionIndex: optIdx } : q
+            ),
+        }));
+    };
+
+    const submitHandler = async (e) => {
+        e.preventDefault();
         try {
-            const response = await axios.post(`http://localhost:3000/api/v1/mentor/courses/${courseId}/quizzes`, form, {headers: {Authorization: `Bearer ${token}`}})
-            console.log(response);
+            const response = await axios.post(
+                `http://localhost:3000/api/v1/mentor/courses/${courseId}/quizzes`,
+                quiz,
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                    },
+                }
+            );
+            console.log('created quiz', response.data);
+            navigate(`/mentor/course/${courseId}`)
         } catch (error) {
-            console.log(error);
+            console.error(error?.response?.data || error.message || error);
         }
-    }
-  return (
-    <div>
-        <form className="space-y-4  flex flex-col ">
-            {/* Title */}
-            <input
-                type="text"
-                placeholder="Question"
-                value={form.question}
-                onChange={(e) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        question: e.target.value,
-                    }))
-                }
-                className="border p-2 w-full rounded-sm"
-            />
-            <div className='flex gap-3'>
+    };
+
+    return (
+        <div>
+            <form className="space-y-4 flex flex-col" onSubmit={submitHandler}>
                 <input
-                type="text"
-                placeholder="Option 01"
-                value={form.option1}
-                onChange={(e) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        option1: e.target.value,
-                    }))
-                }
-                className="border p-2 w-full rounded-sm"
-            />
-            <input
-                type="text"
-                placeholder="Option 02"
-                value={form.option2}
-                onChange={(e) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        option2: e.target.value,
-                    }))
-                }
-                className="border p-2 w-full rounded-sm"
-            />
-            </div>
-            <div className='flex gap-3'>
-            <input
-                type="text"
-                placeholder="Option 03"
-                value={form.option3}
-                onChange={(e) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        option3: e.target.value,
-                    }))
-                }
-                className="border p-2 w-full rounded-sm"
-            />
-            <input
-                type="text"
-                placeholder="Option 04"
-                value={form.option4}
-                onChange={(e) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        option4: e.target.value,
-                    }))
-                }
-                className="border p-2 w-full rounded-sm"
-            />
-            </div>
+                    type="text"
+                    placeholder="Quiz title"
+                    value={quiz.title}
+                    onChange={handleTitleChange}
+                    className="border p-2 w-full rounded-sm"
+                />
 
-            {/* Order (number) */}
-            <div className='flex gap-3'>
-            <input
-                type="number"
-                placeholder="Order"
-                value={form.order}
-                onChange={(e) =>
-                    setForm((prev) => ({
-                        ...prev,
-                        order: Number(e.target.value),
-                    }))
-                }
-                className="border p-2 w-full rounded-sm"
-            />
+                {quiz.questions.map((q, qi) => (
+                    <div key={qi} className="border p-4 rounded-md space-y-2">
+                        <div className="flex justify-between items-start">
+                            <h4 className="font-semibold">Question {qi + 1}</h4>
+                            <button
+                                type="button"
+                                onClick={() => removeQuestion(qi)}
+                                className="text-red-500"
+                            >
+                                Remove
+                            </button>
+                        </div>
 
-            <button
-                className="py-3 px-5 bg-amber-500 rounded-lg cursor-pointer"
-                onClick={submitHandler}
-            >
-                Submit
-            </button>
-            </div>
-        </form>
-    </div>
-  )
+                        <input
+                            type="text"
+                            placeholder="Question text"
+                            value={q.questionText}
+                            onChange={(e) =>
+                                updateQuestionText(qi, e.target.value)
+                            }
+                            className="border p-2 w-full rounded-sm"
+                        />
+
+                        <div className="grid grid-cols-2 gap-2">
+                            {q.options.map((opt, oi) => (
+                                <label
+                                    key={oi}
+                                    className="flex items-center gap-2"
+                                >
+                                    <input
+                                        type="radio"
+                                        name={`correct-${qi}`}
+                                        checked={q.correctOptionIndex === oi}
+                                        onChange={() =>
+                                            setCorrectOption(qi, oi)
+                                        }
+                                    />
+                                    <input
+                                        type="text"
+                                        placeholder={`Option ${oi + 1}`}
+                                        value={opt}
+                                        onChange={(e) =>
+                                            updateOption(qi, oi, e.target.value)
+                                        }
+                                        className="border p-2 w-full rounded-sm"
+                                    />
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+                ))}
+
+                <div className="flex gap-3">
+                    <button
+                        type="button"
+                        onClick={addQuestion}
+                        className="py-2 px-4 bg-sky-500 text-white rounded"
+                    >
+                        Add Question
+                    </button>
+                    <button
+                        type="submit"
+                        className="py-2 px-4 bg-amber-500 rounded-lg"
+                    >
+                        Submit Quiz
+                    </button>
+                </div>
+            </form>
+        </div>
+    );
 }
 
-export default AddQuiz
+export default AddQuiz;
