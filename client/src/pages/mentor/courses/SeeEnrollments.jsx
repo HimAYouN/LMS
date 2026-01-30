@@ -11,7 +11,7 @@ function SeeEnrollments() {
           console.log("MAI YAHA HU");
             const response = await axios.get(
                 `http://localhost:3000/api/v1/courses/${courseId}/enrollments`,
-                { headers: { Authorization: `Bearer ${token}` } }
+                {headers: {Authorization: `Bearer ${token}`}}
             );
             setEnrolled(response.data.data)
             console.log(response);
