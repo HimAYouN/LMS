@@ -18,7 +18,7 @@ const RoleSelection = () => {
 
       <div className="h-1/2  flex items-center justify-center rounded-md relative overflow-hidden">
         <div className="relative rounded-md">
-          <img src={BGImage} alt="Background" className="w-[30rem] h-auto " />
+          <img src={BGImage} alt="Background" className="w-120 h-auto " />
           <img
             src={Logo}
             alt="Logo"
