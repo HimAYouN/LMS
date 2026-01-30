@@ -81,20 +81,16 @@ function MentorDashboard() {
                                 ACTIONS
                             </h3>
                             <div className="flex flex-col gap-2 text-sm">
-                                <button className="text-left px-3 py-2 rounded-lg hover:bg-gray-100">
-                                    Create Quiz
-                                </button>
+                                
                                 <button
-                                    className="text-left px-3 py-2 rounded-lg hover:bg-gray-100"
+                                    className="text-left px-3 py-2 rounded-lg bg-blue-600 text-gray-100 hover:bg-blue-800"
                                     onClick={() =>
                                         navigate('/mentor/createCourse')
                                     }
                                 >
                                     Create Course
                                 </button>
-                                <button className="text-left px-3 py-2 rounded-lg hover:bg-gray-100">
-                                    Create Assignment
-                                </button>
+                                
                                 <button className="text-left px-3 py-2 rounded-lg bg-red-500 text-white  hover:bg-red-700" onClick={logout}>
                                     Logout
                                 </button>
