@@ -69,7 +69,7 @@ function StudentCourses() {
         try {
             const response = await axios.post(
                 `http://localhost:3000/api/v1/courses/${courseId}/enroll`,
-                {}, // body (empty)
+                {}, 
                 {
                     headers: {
                         Authorization: `Bearer ${token}`,
@@ -87,7 +87,7 @@ function StudentCourses() {
     };
 
     const WatchCourse = (courseId)=>{
-        navigate(`/student/courses/watch/:${courseId}`)
+        navigate(`/student/courses/watch/${courseId}`)
     }
     if (loading) return <Loading />;
     return (
@@ -121,7 +121,7 @@ function StudentCourses() {
                                     <p className="text-gray-600">
                                         Category: {course?.courseId.category}
                                     </p>
-                                    <button className="mt-2 bg-blue-600 text-white px-4 py-2 rounded" onClick={()=>WatchCourse(course._id)} courseId={course._id}>
+                                    <button className="mt-2 bg-blue-600 text-white px-4 py-2 rounded" onClick={()=> navigate(`/student/courses/watch/${course.courseId._id}`)}>
                                         Watch
                                     </button>
                                 </div>
