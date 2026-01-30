@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 import { authorizeRoles } from "../middleware/role.middleware.js";
-import { getQuizForStudent, submitQuiz } from "../controller/quizAttempt.contoller.js";
+import { getQuizForStudent, submitQuiz } from "../controller/quizAttempt.controller.js";
 
 const router = Router();
 

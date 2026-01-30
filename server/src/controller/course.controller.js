@@ -75,7 +75,7 @@ const getCourseDetails = asyncHandler(async (req, res) => {
     .sort({ order: 1 })
     .lean();
 
-  //  Fetch lessons for each section with visibility rules
+  //  Fetch lessons for each section
   for (const section of sections) {
     let lessonQuery = { sectionId: section._id };
 
