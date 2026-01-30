@@ -104,7 +104,7 @@ function StudentCourses() {
                             {enrolledCourse.map((course) => (
                                 <div
                                     key={course.courseId_id}
-                                    className="w-80 bg-gray-100 shadow-lg rounded-xl p-6 flex-shrink-0"
+                                    className="w-80 bg-gray-100 shadow-lg rounded-xl p-6 shrink-0"
                                 >
                                     <img
                                         src="https://i.ytimg.com/vi/_I3YpLe74Qo/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCuynv6ZLzwxuwFqF-eYwndFIseQA"
@@ -141,7 +141,7 @@ function StudentCourses() {
                             {allCourse.map((course, index) => (
                                 <div
                                     key={course._id}
-                                    className="w-80 bg-gray-100 shadow-lg rounded-xl p-6 flex-shrink-0"
+                                    className="w-80 bg-gray-100 shadow-lg rounded-xl p-6 shrink-0"
                                 >
                                     <img
                                         src="https://i.ytimg.com/vi/_I3YpLe74Qo/hq720.jpg?sqp=-oaymwEnCNAFEJQDSFryq4qpAxkIARUAAIhCGAHYAQHiAQoIGBACGAY4AUAB&rs=AOn4CLCuynv6ZLzwxuwFqF-eYwndFIseQA"
